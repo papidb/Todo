@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>TODO App</title>
+</head>
+
+<body>
+    <style>
+        html {
+            font-family: sans-serif;
+            background: #d1e2ff;
+        }
+
+        .lists {
+            max-width: 400px;
+            margin: 50px auto;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .list, .listInput {
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #F1F1F1;
+        }
+
+        .list:last-child {
+            border-bottom: 0;
+        }
+
+
+        input:checked+p {
+            background: #F9F9F9;
+            text-decoration: line-through;
+        }
+
+        input[type="checkbox"] {
+            margin: 20px;
+        }
+
+        .typein, p {
+            margin: 0;
+            padding: 20px;
+            transition: background 0.2s;
+            flex: 1;
+            font-family: 'helvetica neue';
+            font-size: 20px;
+            font-weight: 200;
+            border-left: 1px solid #D1E2FF;
+        }
+        .typein {
+            border: 1px solid #D1E2FF;
+        }
+    </style>
+
+    <div class="container">
+        <div class="lists" id="lists">
+            <div class="listInput">
+                <!-- <span style="margin: 20px; width: 13px;">+</span> -->
+                <input class="typein" id="mainInput" type="text"></input>
+
+            </div>
+            <div class="list">
+                <input checked type="checkbox">
+                <p>Stop playing Games</p>
+            </div>
+            <div class="list">
+                <input type="checkbox">
+                <p>Look for the Car key.</p>
+            </div>
+        </div>
+    </div>
+    <script>
+        // manipulate
+        // this makes us loop through the elements in the list (NodeList)
+        // Array.prototype.each = Array.prototype.forEach;
+        NodeList.prototype.__proto__ = Array.prototype;
+
+        // structure the todo object
+        function Todo(text, state) {
+            // the text is the text of the todo
+            this.text = text || ''
+            // the state is whether the todo is completed or not
+            this.state = state ? 'COMPLETED' : 'ACTIVE'
+        }
+
+        // add an event listener that listens to enter key on the main input and adds a new list
+        const mainInput = document.getElementById('mainInput');
+        var lists = document.querySelectorAll('.list');
+        var listElement = document.getElementById('lists');
+        var Todos = lists.map(function (list) {
+            let checkbox = list.firstElementChild;
+            let p = list.lastElementChild;
+            let text = p.textContent;
+            let state = checkbox.checked;
+            return new Todo(text, state)
+        })
+
+        function displayList(text) {
+            let div = document.createElement("div");
+            div.className = 'list';
+            let p = document.createElement("p");
+            let checkbox = document.createElement("input");
+            checkbox.type = 'checkbox'
+            text = document.createTextNode(text);
+            p.appendChild(text);
+            div.appendChild(checkbox);
+            div.appendChild(p);
+            listElement.appendChild(div);
+            mainInput.value = '';
+        }
+        mainInput.addEventListener('keydown', function (event) {
+            let inputText = this.value;
+            if (event.key != 'Enter') return;
+            if (inputText.trim() == '') return;
+            displayList(inputText)
+        })
+    </script>
+</body>
+
+</html>

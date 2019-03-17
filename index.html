@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>TODO App</title>
+</head>
+
+<body>
+    <style>
+        html {
+            font-family: sans-serif;
+            background: #d1e2ff;
+        }
+
+        .lists {
+            max-width: 400px;
+            margin: 50px auto;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .list, .listInput {
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #F1F1F1;
+        }
+
+        .list:last-child {
+            border-bottom: 0;
+        }
+
+
+        input:checked+p {
+            background: #F9F9F9;
+            text-decoration: line-through;
+        }
+
+        input[type="checkbox"] {
+            margin: 20px;
+        }
+
+        .typein, p {
+            margin: 0;
+            padding: 20px;
+            transition: background 0.2s;
+            flex: 1;
+            font-family: 'helvetica neue';
+            font-size: 20px;
+            font-weight: 200;
+            border-left: 1px solid #D1E2FF;
+        }
+        .typein {
+            border: 1px solid #D1E2FF;
+        }
+    </style>
+
+    <div class="container">
+        <div class="lists" id="lists">
+            <div class="listInput">
+                <input class="typein" id="mainInput" type="text"></input>
+
+            </div>
+            <div class="list">
+                <input checked type="checkbox">
+                <p>Stop playing Games</p>
+            </div>
+            <div class="list">
+                <input type="checkbox">
+                <p>Look for the Car key.</p>
+            </div>
+        </div>
+    </div>
+    <script>
+        // this makes us loop through the elements in the list (NodeList)
+        NodeList.prototype.__proto__ = Array.prototype;
+
+        var lists = document.getElementById('lists');
+        var mainInput = document.getElementById('mainInput');
+        
+
+        function displayList(text) {
+            // takes text adds elements to the list in the dom
+            text = text || ''
+            let div = document.createElement('div');
+            div.className = 'list'
+            let checkbox = document.createElement('input');
+            checkbox.type = 'checkbox'
+            let p = document.createElement('p');
+            let word = document.createTextNode(text);
+            p.appendChild(word)
+            div.appendChild(checkbox)
+            div.appendChild(p)
+            lists.appendChild(div);
+            return;
+        }
+        // add event listener for the main Input 
+        mainInput.addEventListener('keydown', function(event) {
+            let value = this.value.trim();
+            // I do not care about any other key apart from enter key
+            // check if enter was pressed
+            if (event.key !== 'Enter' || value == '') return;
+            displayList(value);
+            this.value = '';
+        })
+        // the display it on the dom
+        
+    </script>
+</body>
+
+</html>
